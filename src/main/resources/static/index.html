@@ -1,100 +1,543 @@
 <!DOCTYPE html>
-
-<html class="ng-app"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide{display:none !important;}ng\:form{display:block;}</style>
-        <title>Welcome</title>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <meta http-equiv="Expires" content="0">
-        <meta http-equiv="Pragma" content="no-store">
-        <meta http-equiv="Cache-control" content="no-store">
-        <meta http-equiv="Cache" content="no-store">
-		
-		</script><link type="text/css" rel="stylesheet" href="./assets/22ab401.loginpage.css">
-		<link type="image/x-icon" href="https://auth.huaweicloud.com/authui/public/custom/ui-lib/theme/images/favicon.ico" rel="icon">
-        <link rel="stylesheet" type="text/css" href="./assets/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="./assets/tiny.min.css">
-        <link rel="stylesheet" type="text/css" href="./assets/tinyext.min.css">
-        <link rel="stylesheet" type="text/css" href="./assets/activity-specific.css">
-		<script src="angular.min.js"></script>
-		<script src="hello.js"></script>
-       
-	</head>
-    <body>
-        <div id="banner">
-        </div>
-        <div id="content">
-            <div class="widthLimit" ui-view="content"><div id="loginAdv" class="ng-scope">
-				<a href="http://activity.huaweicloud.com/" target="_blank">                  
-					<img src="assets/20180118211701_80505.png" alt="">
-				</a>
-			</div>
-		<div id="loginForm" class="ng-scope">
-		<div class="loginTypeDiv"  ng-controller="Hello">
-			<h1 class="act-h1 act-with-h2 act-cus">Hello James, Welcome to the Cloud!!!</h1>
-			<h1 class="act-h1 act-with-h2 act-cus"><i class="gift"></i></h1>
-			<span id="ownerLogin" class="ng-binding loginTypeNoSelected" style="margin-right: -2px" >The id is:1</span>
-		</div>
-		<div>
-
-		</div>
-		</div>
-
-		</div>
-        </div>
-        <div id="footer">
-            <div class="widthLimit" ui-view="footer">
-			<style class="ng-app">
-			.col-md-6 {
-				position: relative
-			}
-			.footer-content{
-				margin:auto;
-				text-align: center;
-				padding: 15px;
-			}
-			#laws span{
-				margin-left: 8px;
-				margin-right: 8px;
-			}
-			.col-md-6 {
-				float:left;
-				width: 50%
-			}
-			.footer-content{
-				width: 1250px;
-				text-align: left;
-			}
-			#term {
-				text-align:right;
-			}
-			
-			.footer-content-russia{
-			   margin:auto;
-			   padding-top: 15px;
-			}
-			.col-md-6-left {
-				 float:left;
-				 text-align: left;
-			}
-			.col-md-6-right {
-				float:right;
-				text-align: right;
-			}
-    
-		</style>
-<!-- ngIf: model.currentLanguage === 'zh-cn' --><style ng-if="model.currentLanguage === &#39;zh-cn&#39;" class="ng-scope">
-    @media (min-width: 1280px) {
-        #footer{
-            height: 70px;
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>开发者工具市场</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-    }
-</style>
-<div ng-if="!model.styleOfSite" class="footer-content ng-scope">
-</div>
-</div>
-</div>
-<span id="loginServerErrorMsg" style="display:none;"></span>
-       
-       
-        
 
-</body></html>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .tool-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 12px rgba(0,0,0,0.15);
+        }
+
+        .tool-card.active {
+            border: 2px solid #667eea;
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+        }
+
+        .tool-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .tool-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            margin-right: 16px;
+        }
+
+        .tool-title {
+            flex: 1;
+        }
+
+        .tool-title h3 {
+            font-size: 1.3rem;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .tool-category {
+            display: inline-block;
+            background: #e0e7ff;
+            color: #4c51bf;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .tool-description {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .tool-workspace {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .tool-workspace.show {
+            display: block;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .workspace-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .workspace-title h2 {
+            font-size: 1.8rem;
+            color: #333;
+        }
+
+        .close-btn {
+            background: #f56565;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.2s;
+        }
+
+        .close-btn:hover {
+            background: #e53e3e;
+        }
+
+        .tool-form {
+            display: grid;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            flex: 1;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #4a5568;
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e0;
+        }
+
+        .result-box {
+            background: #f7fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .result-box h4 {
+            color: #333;
+            margin-bottom: 12px;
+            font-size: 1rem;
+        }
+
+        .result-content {
+            background: white;
+            padding: 16px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            color: #2d3748;
+            word-break: break-all;
+            white-space: pre-wrap;
+            min-height: 60px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .error {
+            background: #fed7d7;
+            border-color: #fc8181;
+            color: #c53030;
+        }
+
+        .success {
+            background: #c6f6d5;
+            border-color: #68d391;
+            color: #276749;
+        }
+
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 16px;
+        }
+
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .radio-item input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .help-text {
+            font-size: 0.85rem;
+            color: #718096;
+            margin-top: 6px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🛠️ 开发者工具市场</h1>
+            <p>精选实用开发工具，提升你的工作效率</p>
+        </div>
+
+        <div class="tools-grid" id="toolsGrid">
+            <!-- Tools will be loaded here -->
+        </div>
+
+        <div class="tool-workspace" id="toolWorkspace">
+            <div class="workspace-header">
+                <div class="workspace-title">
+                    <h2 id="workspaceTitle">工具名称</h2>
+                    <p id="workspaceDesc" style="color: #666; margin-top: 8px;"></p>
+                </div>
+                <button class="close-btn" onclick="closeWorkspace()">关闭</button>
+            </div>
+            <div class="tool-form" id="toolForm">
+                <!-- Form will be generated here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = '/api/tools';
+        let currentTool = null;
+
+        // Load tools on page load
+        document.addEventListener('DOMContentLoaded', loadTools);
+
+        async function loadTools() {
+            try {
+                const response = await fetch(API_BASE);
+                const data = await response.json();
+
+                if (data.success) {
+                    displayTools(data.data);
+                } else {
+                    console.error('Failed to load tools:', data.error);
+                }
+            } catch (error) {
+                console.error('Error loading tools:', error);
+            }
+        }
+
+        function displayTools(tools) {
+            const grid = document.getElementById('toolsGrid');
+            grid.innerHTML = tools.map((tool, index) => `
+                <div class="tool-card" onclick="openTool('${tool.id}')">
+                    <div class="tool-header">
+                        <div class="tool-icon">${tool.name.charAt(0)}</div>
+                        <div class="tool-title">
+                            <h3>${tool.name}</h3>
+                            <span class="tool-category">${tool.category}</span>
+                        </div>
+                    </div>
+                    <p class="tool-description">${tool.description}</p>
+                </div>
+            `).join('');
+        }
+
+        async function openTool(toolId) {
+            try {
+                const response = await fetch(`${API_BASE}/${toolId}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    currentTool = data.data;
+                    showWorkspace(currentTool);
+                } else {
+                    alert('加载工具失败: ' + data.error);
+                }
+            } catch (error) {
+                console.error('Error loading tool:', error);
+                alert('加载工具时发生错误');
+            }
+        }
+
+        function showWorkspace(tool) {
+            document.getElementById('workspaceTitle').textContent = tool.name;
+            document.getElementById('workspaceDesc').textContent = tool.description;
+
+            const form = document.getElementById('toolForm');
+            form.innerHTML = generateForm(tool);
+
+            document.getElementById('toolWorkspace').classList.add('show');
+            document.getElementById('toolWorkspace').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function generateForm(tool) {
+            let formHtml = '';
+
+            // Generate input fields based on parameters
+            Object.values(tool.parameters || {}).forEach(param => {
+                formHtml += `
+                    <div class="form-group">
+                        <label>${param.description || param.name}</label>
+                `;
+
+                if (param.name === 'operation') {
+                    formHtml += `
+                        <div class="radio-group">
+                            <label class="radio-item">
+                                <input type="radio" name="${param.name}" value="encode" checked>
+                                编码
+                            </label>
+                            <label class="radio-item">
+                                <input type="radio" name="${param.name}" value="decode">
+                                解码
+                            </label>
+                        </div>
+                    `;
+                } else if (param.name === 'variant') {
+                    formHtml += `
+                        <select name="${param.name}">
+                            <option value="standard">标准 Base64</option>
+                            <option value="url">URL 安全编码</option>
+                            <option value="mime">MIME 编码</option>
+                        </select>
+                        <p class="help-text">选择 Base64 编码变体</p>
+                    `;
+                } else if (param.name === 'input') {
+                    formHtml += `
+                        <textarea name="${param.name}" placeholder="请输入需要处理的内容..."></textarea>
+                    `;
+                } else {
+                    formHtml += `
+                        <input type="text" name="${param.name}" value="${param.defaultValue || ''}" placeholder="请输入...">
+                    `;
+                }
+
+                formHtml += '</div>';
+            });
+
+            formHtml += `
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="executeTool()">执行</button>
+                    <button class="btn btn-secondary" onclick="clearForm()">清空</button>
+                </div>
+                <div class="result-box" id="resultBox" style="display: none;">
+                    <h4>执行结果</h4>
+                    <div class="result-content" id="resultContent"></div>
+                </div>
+            `;
+
+            return formHtml;
+        }
+
+        async function executeTool() {
+            if (!currentTool) return;
+
+            const form = document.getElementById('toolForm');
+            const inputs = form.querySelectorAll('input, textarea, select');
+            const params = {};
+
+            inputs.forEach(input => {
+                if (input.type === 'radio') {
+                    if (input.checked) {
+                        params[input.name] = input.value;
+                    }
+                } else {
+                    params[input.name] = input.value;
+                }
+            });
+
+            try {
+                const response = await fetch(`${API_BASE}/${currentTool.id}/execute`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(params)
+                });
+
+                const data = await response.json();
+                displayResult(data);
+            } catch (error) {
+                console.error('Error executing tool:', error);
+                displayResult({
+                    success: false,
+                    error: '网络错误或服务器无响应'
+                });
+            }
+        }
+
+        function displayResult(result) {
+            const resultBox = document.getElementById('resultBox');
+            const resultContent = document.getElementById('resultContent');
+
+            resultBox.style.display = 'block';
+            resultBox.className = 'result-box';
+
+            if (result.success) {
+                resultBox.classList.add('success');
+                resultContent.textContent = result.data?.result || '操作成功';
+            } else {
+                resultBox.classList.add('error');
+                resultContent.textContent = result.error || '操作失败';
+            }
+        }
+
+        function clearForm() {
+            const form = document.getElementById('toolForm');
+            const inputs = form.querySelectorAll('input, textarea');
+
+            inputs.forEach(input => {
+                if (input.type === 'radio') {
+                    if (input.value === 'encode' || input.checked) {
+                        // Keep first radio checked
+                    } else {
+                        input.checked = false;
+                    }
+                } else {
+                    input.value = '';
+                }
+            });
+
+            document.getElementById('resultBox').style.display = 'none';
+        }
+
+        function closeWorkspace() {
+            document.getElementById('toolWorkspace').classList.remove('show');
+            currentTool = null;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
