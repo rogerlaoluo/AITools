@@ -413,24 +413,73 @@
                 `;
 
                 if (param.name === 'operation') {
-                    formHtml += `
-                        <div class="radio-group">
-                            <label class="radio-item">
-                                <input type="radio" name="${param.name}" value="encode" checked>
-                                编码
-                            </label>
-                            <label class="radio-item">
-                                <input type="radio" name="${param.name}" value="decode">
-                                解码
-                            </label>
-                        </div>
-                    `;
+                    // Parse operation options from description
+                    const desc = param.description || '';
+
+                    // Base64 tool operations
+                    if (desc.includes('encode') && desc.includes('decode') && !desc.includes('compress')) {
+                        formHtml += `
+                            <div class="radio-group">
+                                <label class="radio-item">
+                                    <input type="radio" name="${param.name}" value="encode" ${param.defaultValue === 'encode' ? 'checked' : ''}>
+                                    编码
+                                </label>
+                                <label class="radio-item">
+                                    <input type="radio" name="${param.name}" value="decode" ${param.defaultValue === 'decode' ? 'checked' : ''}>
+                                    解码
+                                </label>
+                            </div>
+                        `;
+                    }
+                    // JSON tool operations
+                    else if (desc.includes('format') && desc.includes('compress')) {
+                        formHtml += `
+                            <div class="radio-group">
+                                <label class="radio-item">
+                                    <input type="radio" name="${param.name}" value="format" ${param.defaultValue === 'format' ? 'checked' : ''}>
+                                    格式化
+                                </label>
+                                <label class="radio-item">
+                                    <input type="radio" name="${param.name}" value="compress" ${param.defaultValue === 'compress' ? 'checked' : ''}>
+                                    压缩
+                                </label>
+                                <label class="radio-item">
+                                    <input type="radio" name="${param.name}" value="validate" ${param.defaultValue === 'validate' ? 'checked' : ''}>
+                                    验证
+                                </label>
+                            </div>
+                        `;
+                    }
+                    // Generic radio buttons from description
+                    else {
+                        const matches = desc.match(/(\w+)\(([^)]+)\)/g) || [];
+                        if (matches.length > 0) {
+                            formHtml += '<div class="radio-group">';
+                            const options = matches.map(m => {
+                                const [, value, label] = m.match(/(\w+)\(([^)]+)\)/) || [];
+                                return { value, label };
+                            });
+                            options.forEach((opt, idx) => {
+                                const isDefault = param.defaultValue === opt.value || (idx === 0 && !param.defaultValue);
+                                formHtml += `
+                                    <label class="radio-item">
+                                        <input type="radio" name="${param.name}" value="${opt.value}" ${isDefault ? 'checked' : ''}>
+                                        ${opt.label}
+                                    </label>
+                                `;
+                            });
+                            formHtml += '</div>';
+                        } else {
+                            // Fallback to text input
+                            formHtml += `<input type="text" name="${param.name}" value="${param.defaultValue || ''}" placeholder="请输入...">`;
+                        }
+                    }
                 } else if (param.name === 'variant') {
                     formHtml += `
                         <select name="${param.name}">
-                            <option value="standard">标准 Base64</option>
-                            <option value="url">URL 安全编码</option>
-                            <option value="mime">MIME 编码</option>
+                            <option value="standard" ${param.defaultValue === 'standard' ? 'selected' : ''}>标准 Base64</option>
+                            <option value="url" ${param.defaultValue === 'url' ? 'selected' : ''}>URL 安全编码</option>
+                            <option value="mime" ${param.defaultValue === 'mime' ? 'selected' : ''}>MIME 编码</option>
                         </select>
                         <p class="help-text">选择 Base64 编码变体</p>
                     `;
@@ -516,14 +565,16 @@
 
         function clearForm() {
             const form = document.getElementById('toolForm');
-            const inputs = form.querySelectorAll('input, textarea');
+            const inputs = form.querySelectorAll('input, textarea, select');
 
+            // Reset all inputs
             inputs.forEach(input => {
                 if (input.type === 'radio') {
-                    if (input.value === 'encode' || input.checked) {
-                        // Keep first radio checked
-                    } else {
-                        input.checked = false;
+                    // Keep the first radio button in each group checked
+                    const name = input.name;
+                    const firstRadio = form.querySelector(`input[name="${name}"]`);
+                    if (firstRadio) {
+                        firstRadio.checked = true;
                     }
                 } else {
                     input.value = '';
