@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASCII 对照表 - 开发者工具市场</title>
+    <link rel="stylesheet" href="../css/common.css">
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>🛠️ 开发者工具市场</h1>
+                <p>精选实用开发工具</p>
+            </div>
+            <ul class="category-nav">
+                <li><a href="../index.html" style="color: white; text-decoration: none; display: block; padding: 12px; background: rgba(255,255,255,0.1); border-radius: 8px;">← 返回首页</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <a href="../index.html" class="back-btn">← 返回工具市场</a>
+
+            <div class="tool-workspace">
+                <div class="workspace-header">
+                    <div class="workspace-title">
+                        <h2>ASCII 对照表</h2>
+                        <p>完整的 ASCII 字符对照表，支持十进制、十六进制、八进制显示</p>
+                    </div>
+                </div>
+
+                <div class="tool-form" id="toolForm">
+                    <div class="form-group">
+                        <label>字符范围</label>
+                        <select name="range">
+                            <option value="all" selected>全部字符 (0-127)</option>
+                            <option value="control">控制字符 (0-31)</option>
+                            <option value="printable">可打印字符 (32-126)</option>
+                            <option value="extended">扩展字符 (128-255)</option>
+                        </select>
+                        <p class="help-text">选择要显示的字符范围</p>
+                    </div>
+
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="runTool()">生成表格</button>
+                    </div>
+
+                    <div class="result-box" id="resultBox" style="display: none;">
+                        <h4>ASCII 对照表</h4>
+                        <div class="result-content" id="resultContent"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/common.js"></script>
+    <script>
+        const TOOL_ID = 'ascii-table';
+
+        async function runTool() {
+            const params = getToolParams('toolForm');
+            const result = await executeTool(TOOL_ID, params);
+            displayResult(result);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>二维码生成器 - 开发者工具市场</title>
+    <link rel="stylesheet" href="../css/common.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- 左侧边栏 -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>🛠️ 开发者工具市场</h1>
+                <p>精选实用开发工具</p>
+            </div>
+            <ul class="category-nav">
+                <li><a href="../index.html" style="color: white; text-decoration: none; display: block; padding: 12px; background: rgba(255,255,255,0.1); border-radius: 8px;">← 返回首页</a></li>
+            </ul>
+        </aside>
+
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <a href="../index.html" class="back-btn">
+                ← 返回工具市场
+            </a>
+
+            <div class="tool-workspace">
+                <div class="workspace-header">
+                    <div class="workspace-title">
+                        <h2>二维码生成器</h2>
+                        <p>快速生成二维码图片，支持自定义尺寸和纠错级别</p>
+                    </div>
+                </div>
+
+                <div class="tool-form" id="toolForm">
+                    <div class="form-group">
+                        <label>二维码内容</label>
+                        <textarea name="text" placeholder="请输入要生成二维码的文本内容或URL..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>图片尺寸 (像素)</label>
+                        <input type="number" name="size" value="300" min="100" max="1000">
+                        <p class="help-text">建议范围：100-1000 像素</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>纠错级别</label>
+                        <select name="errorCorrection">
+                            <option value="L">L - 低 (7%)</option>
+                            <option value="M" selected>M - 中 (15%)</option>
+                            <option value="Q">Q - 较高 (25%)</option>
+                            <option value="H">H - 高 (30%)</option>
+                        </select>
+                        <p class="help-text">纠错级别越高，二维码可容纳的纠错信息越多</p>
+                    </div>
+
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="runTool()">生成二维码</button>
+                        <button class="btn btn-secondary" onclick="clearForm()">清空</button>
+                    </div>
+
+                    <div class="result-box" id="resultBox" style="display: none;">
+                        <h4>生成结果</h4>
+                        <div class="result-content" id="resultContent"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/common.js"></script>
+    <script>
+        const TOOL_ID = 'qrcode-generator';
+
+        async function runTool() {
+            const params = getToolParams('toolForm');
+            const result = await executeTool(TOOL_ID, params);
+            displayResult(result);
+        }
+    </script>
+</body>
+</html>
