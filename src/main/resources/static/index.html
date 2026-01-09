@@ -502,6 +502,34 @@
                         <input type="number" name="${param.name}" value="${param.defaultValue || '300'}" min="100" max="1000" step="10">
                         <p class="help-text">二维码图片尺寸（像素）</p>
                     `;
+                } else if (param.name === 'level' || param.name === 'age') {
+                    formHtml += `
+                        <input type="number" name="${param.name}" value="${param.defaultValue || ''}" ${param.name === 'level' ? 'min="13" max="22"' : 'min="20" max="60"'}>
+                    `;
+                } else if (param.name.startsWith('perf')) {
+                    formHtml += `
+                        <select name="${param.name}">
+                            <option value="A" ${param.defaultValue === 'A' ? 'selected' : ''}>A (100分)</option>
+                            <option value="B+" ${param.defaultValue === 'B+' ? 'selected' : ''}>B+ (80分)</option>
+                            <option value="B" ${param.defaultValue === 'B' ? 'selected' : ''}>B (60分)</option>
+                            <option value="C" ${param.defaultValue === 'C' ? 'selected' : ''}>C (0分)</option>
+                            <option value="D" ${param.defaultValue === 'D' ? 'selected' : ''}>D (0分)</option>
+                        </select>
+                    `;
+                } else if (param.name === 'teamPotential') {
+                    formHtml += `
+                        <select name="${param.name}">
+                            <option value="100" ${param.defaultValue === '100' ? 'selected' : ''}>发展空间非常大 (100分)</option>
+                            <option value="80" ${param.defaultValue === '80' ? 'selected' : ''}>发展空间较大 (80分)</option>
+                            <option value="60" ${param.defaultValue === '60' ? 'selected' : ''}>发展空间一般 (60分)</option>
+                            <option value="40" ${param.defaultValue === '40' ? 'selected' : ''}>发展空间较差 (40分)</option>
+                        </select>
+                    `;
+                } else if (param.name === 'otherFactors') {
+                    formHtml += `
+                        <input type="number" name="${param.name}" value="${param.defaultValue || '60'}" min="0" max="100">
+                        <p class="help-text">其它因素综合得分（荣誉、项目经验、协作能力等）</p>
+                    `;
                 } else {
                     formHtml += `
                         <input type="text" name="${param.name}" value="${param.defaultValue || ''}" placeholder="请输入...">
@@ -585,6 +613,37 @@
                             resultContent.innerHTML += `<p style="text-align: center; margin-top: 10px; color: #666; font-size: 0.9rem;">${info.join(' | ')}</p>`;
                         }
                     }
+                }
+                // Check if result is contract renewal evaluation
+                else if (result.data?.details && result.data.details['续签评估']) {
+                    const details = result.data.details;
+                    const score = details['总分'];
+                    const renewal = details['续签评估'];
+                    const color = details['颜色标识'];
+
+                    let colorClass = '';
+                    if (color === 'green') colorClass = '#48bb78';
+                    else if (color === 'blue') colorClass = '#4299e1';
+                    else if (color === 'orange') colorClass = '#ed8936';
+                    else if (color === 'red') colorClass = '#f56565';
+
+                    resultContent.innerHTML = `
+                        <div style="text-align: center; padding: 20px;">
+                            <div style="font-size: 3rem; font-weight: bold; color: ${colorClass}; margin-bottom: 10px;">${score}</div>
+                            <div style="font-size: 1.5rem; color: ${colorClass}; margin-bottom: 20px; font-weight: 600;">${renewal}</div>
+                            <div style="text-align: left; background: #f7fafc; padding: 15px; border-radius: 8px; margin-top: 20px;">
+                                <div style="margin-bottom: 10px;"><strong>职级:</strong> ${details['职级']}级 | <strong>年龄:</strong> ${details['年龄']}岁 | <strong>职级年龄得分:</strong> ${details['职级年龄得分']}</div>
+                                <div style="margin-bottom: 10px;"><strong>绩效评估得分:</strong> ${details['绩效评估得分']}</div>
+                                <div style="margin-left: 20px; font-size: 0.9rem; color: #666;">
+                                    2022: ${details['2022绩效']} | 2023: ${details['2023绩效']} | 2024: ${details['2024绩效']} | 2025: ${details['2025绩效']}
+                                </div>
+                                <div style="margin-top: 10px;"><strong>团队业务发展潜力:</strong> ${details['团队业务发展潜力得分']} | <strong>其它因素:</strong> ${details['其它因素得分']}</div>
+                            </div>
+                            <div style="text-align: left; background: #fffaf0; padding: 15px; border-radius: 8px; margin-top: 15px; border-left: 4px solid #ed8936;">
+                                <strong>建议:</strong> ${details['建议']}
+                            </div>
+                        </div>
+                    `;
                 } else {
                     resultContent.textContent = result.data?.result || '操作成功';
                 }
