@@ -309,29 +309,68 @@
             color: #718096;
             margin-top: 6px;
         }
+
+        .home-page {
+            display: block;
+        }
+
+        .home-page.hidden {
+            display: none;
+        }
+
+        .tool-page {
+            display: none;
+        }
+
+        .tool-page.show {
+            display: block;
+        }
+
+        .back-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.2s;
+            margin-bottom: 20px;
+        }
+
+        .back-btn:hover {
+            background: #5568d3;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>🛠️ 开发者工具市场</h1>
-            <p>精选实用开发工具，提升你的工作效率</p>
-        </div>
-
-        <div class="tools-grid" id="toolsGrid">
-            <!-- Tools will be loaded here -->
-        </div>
-
-        <div class="tool-workspace" id="toolWorkspace">
-            <div class="workspace-header">
-                <div class="workspace-title">
-                    <h2 id="workspaceTitle">工具名称</h2>
-                    <p id="workspaceDesc" style="color: #666; margin-top: 8px;"></p>
-                </div>
-                <button class="close-btn" onclick="closeWorkspace()">关闭</button>
+        <!-- Home Page -->
+        <div class="home-page" id="homePage">
+            <div class="header">
+                <h1>🛠️ 开发者工具市场</h1>
+                <p>精选实用开发工具，提升你的工作效率</p>
             </div>
-            <div class="tool-form" id="toolForm">
-                <!-- Form will be generated here -->
+
+            <div class="tools-grid" id="toolsGrid">
+                <!-- Tools will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Tool Page -->
+        <div class="tool-page" id="toolPage">
+            <button class="back-btn" onclick="goHome()">← 返回工具市场</button>
+
+            <div class="tool-workspace" style="display: block;">
+                <div class="workspace-header">
+                    <div class="workspace-title">
+                        <h2 id="workspaceTitle">工具名称</h2>
+                        <p id="workspaceDesc" style="color: #666; margin-top: 8px;"></p>
+                    </div>
+                </div>
+                <div class="tool-form" id="toolForm">
+                    <!-- Form will be generated here -->
+                </div>
             </div>
         </div>
     </div>
@@ -398,8 +437,18 @@
             const form = document.getElementById('toolForm');
             form.innerHTML = generateForm(tool);
 
-            document.getElementById('toolWorkspace').classList.add('show');
-            document.getElementById('toolWorkspace').scrollIntoView({ behavior: 'smooth' });
+            // Switch to tool page
+            document.getElementById('homePage').classList.add('hidden');
+            document.getElementById('toolPage').classList.add('show');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function goHome() {
+            // Switch back to home page
+            document.getElementById('toolPage').classList.remove('show');
+            document.getElementById('homePage').classList.remove('hidden');
+            currentTool = null;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function generateForm(tool) {
@@ -672,12 +721,6 @@
             });
 
             document.getElementById('resultBox').style.display = 'none';
-        }
-
-        function closeWorkspace() {
-            document.getElementById('toolWorkspace').classList.remove('show');
-            currentTool = null;
-            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     </script>
 </body>
