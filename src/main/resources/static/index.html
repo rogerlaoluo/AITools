@@ -483,9 +483,24 @@
                         </select>
                         <p class="help-text">选择 Base64 编码变体</p>
                     `;
-                } else if (param.name === 'input') {
+                } else if (param.name === 'input' || param.name === 'text') {
                     formHtml += `
                         <textarea name="${param.name}" placeholder="请输入需要处理的内容..."></textarea>
+                    `;
+                } else if (param.name === 'errorCorrection') {
+                    formHtml += `
+                        <select name="${param.name}">
+                            <option value="L" ${param.defaultValue === 'L' ? 'selected' : ''}>L (7% 纠错)</option>
+                            <option value="M" ${param.defaultValue === 'M' ? 'selected' : ''}>M (15% 纠错)</option>
+                            <option value="Q" ${param.defaultValue === 'Q' ? 'selected' : ''}>Q (25% 纠错)</option>
+                            <option value="H" ${param.defaultValue === 'H' ? 'selected' : ''}>H (30% 纠错)</option>
+                        </select>
+                        <p class="help-text">选择纠错级别，数值越高可容错越多</p>
+                    `;
+                } else if (param.name === 'size') {
+                    formHtml += `
+                        <input type="number" name="${param.name}" value="${param.defaultValue || '300'}" min="100" max="1000" step="10">
+                        <p class="help-text">二维码图片尺寸（像素）</p>
                     `;
                 } else {
                     formHtml += `
@@ -556,7 +571,23 @@
 
             if (result.success) {
                 resultBox.classList.add('success');
-                resultContent.textContent = result.data?.result || '操作成功';
+
+                // Check if result contains an image (base64 data URL)
+                if (result.data?.result && result.data.result.startsWith('data:image')) {
+                    resultContent.innerHTML = `<img src="${result.data.result}" alt="QR Code" style="max-width: 100%; height: auto; display: block; margin: 0 auto;">`;
+
+                    // Display additional info if available
+                    if (result.data.size || result.data.errorCorrection) {
+                        const info = [];
+                        if (result.data.size) info.push(`尺寸: ${result.data.size}x${result.data.size}`);
+                        if (result.data.errorCorrection) info.push(`纠错: ${result.data.errorCorrection}`);
+                        if (info.length > 0) {
+                            resultContent.innerHTML += `<p style="text-align: center; margin-top: 10px; color: #666; font-size: 0.9rem;">${info.join(' | ')}</p>`;
+                        }
+                    }
+                } else {
+                    resultContent.textContent = result.data?.result || '操作成功';
+                }
             } else {
                 resultBox.classList.add('error');
                 resultContent.textContent = result.error || '操作失败';
