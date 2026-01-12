@@ -6,7 +6,10 @@
       "Bash(curl:*)",
       "Bash(python:*)",
       "Bash(taskkill:*)",
-      "Bash(netstat:*)"
+      "Bash(netstat:*)",
+      "Bash(for:*)",
+      "Bash(do echo:*)",
+      "Bash(done:*)"
     ]
   }
 }
