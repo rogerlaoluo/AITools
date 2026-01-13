@@ -9,7 +9,14 @@
       "Bash(netstat:*)",
       "Bash(for:*)",
       "Bash(do echo:*)",
-      "Bash(done:*)"
+      "Bash(done:*)",
+      "WebSearch",
+      "Bash(pip install:*)",
+      "Bash(findstr:*)"
     ]
+  },
+  "enabledPlugins": {
+    "code-simplifier@claude-plugins-official": true,
+    "code-review@claude-plugins-official": true
   }
 }
