@@ -47,7 +47,19 @@ public class ExploreService {
     @Transactional(readOnly = true)
     public PageResponse<ContentDto> searchContent(String keyword, int page, int size) {
         Pageable pageable = org.springframework.data.domain.PageRequest.of(page, size);
-        Page<Content> contentPage = contentRepository.searchByKeyword(keyword, pageable);
+
+        // 首先尝试查找匹配的标签
+        List<Tag> matchingTags = tagRepository.findByNameContainingIgnoreCase(keyword);
+
+        Page<Content> contentPage;
+        if (!matchingTags.isEmpty()) {
+            // 如果找到匹配的标签，返回第一个标签下的内容
+            Long tagId = matchingTags.get(0).getId();
+            contentPage = contentRepository.findByTagId(tagId, pageable);
+        } else {
+            // 否则按文本内容搜索
+            contentPage = contentRepository.searchByKeyword(keyword, pageable);
+        }
 
         return PageResponse.<ContentDto>builder()
                 .content(contentPage.getContent().stream()
