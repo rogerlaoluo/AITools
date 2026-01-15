@@ -10,6 +10,7 @@ export default defineConfig({
     }
   },
   server: {
+    host: '0.0.0.0', // 支持本机 IP 访问
     port: 3000,
     proxy: {
       '/api': {
