@@ -31,12 +31,12 @@ CREATE TABLE users (
 -- ============================================
 -- 内容表
 -- ============================================
-CREATE TABLE contents (
+CREATE TABLE contents(
     id BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '主键',
     user_id BIGINT NOT NULL COMMENT '作者ID',
-    content_type ENUM('image', 'video', 'text') NOT NULL COMMENT '类型',
+    content_type VARCHAR(20) DEFAULT NULL COMMENT '类型',
     text_content TEXT DEFAULT NULL COMMENT '文字内容',
-    media_paths JSON DEFAULT NULL COMMENT '媒体文件路径数组',
+    media_paths TEXT DEFAULT NULL COMMENT '媒体文件路径数组',
     location VARCHAR(200) DEFAULT NULL COMMENT '地理位置（可选）',
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '发布时间',
     INDEX idx_user_id (user_id),
