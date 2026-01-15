@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: timeline_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: timeline_db
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - timeline_network
+
+  redis:
+    image: redis:7-alpine
+    container_name: timeline_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - timeline_network
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: timeline_backend
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/timeline_db?useSSL=false&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 123456
+      SPRING_REDIS_HOST: redis
+      SPRING_REDIS_PORT: 6379
+    volumes:
+      - storage_data:/storage
+    depends_on:
+      - mysql
+      - redis
+    networks:
+      - timeline_network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: timeline_frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - timeline_network
+
+volumes:
+  mysql_data:
+  redis_data:
+  storage_data:
+
+networks:
+  timeline_network:
+    driver: bridge

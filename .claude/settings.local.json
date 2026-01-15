@@ -12,7 +12,11 @@
       "Bash(done:*)",
       "WebSearch",
       "Bash(pip install:*)",
-      "Bash(findstr:*)"
+      "Bash(findstr:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git worktree add:*)",
+      "Bash(java:*)"
     ]
   },
   "enabledPlugins": {
