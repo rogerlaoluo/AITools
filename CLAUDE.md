@@ -15,7 +15,7 @@
 
 **项目坐标：**
 - GroupId: `com.huawei.codearts`
-- ArtifactId: `demoapp`
+- ArtifactId: `timeline`
 - Packaging: `jar`
 
 ## 构建命令
@@ -41,10 +41,10 @@ mvn package -DskipTests
 mvn spring-boot:run
 
 # 运行打包后的 JAR
-java -jar ./target/demoapp.jar
+java -jar ./target/timeline.jar
 ```
 
-**构建输出：** `target/demoapp.jar`（通过 `<finalName>${project.artifactId}</finalName>` 配置）
+**构建输出：** `target/timeline.jar`（通过 `<finalName>${project.artifactId}</finalName>` 配置）
 
 ### 前端 (NPM)
 ```bash
