@@ -1,0 +1,635 @@
+Claude Code 特性清单,类别,子类别,功能名称,描述,详细信息/示例
+核心功能,概述,是什么,Claude Code 是 Anthropic 的代理编码工具,"在终端中运行，帮助您比以往更快地将想法转化为代码"
+核心功能,概述,构建功能,从描述中构建功能,"告诉 Claude 您想用纯英语构建什么。它将制定计划、编写代码并确保其工作"
+核心功能,概述,调试和修复问题,描述错误或粘贴错误消息,Claude Code 分析代码库、识别问题并实施修复
+核心功能,概述,导航任何代码库,询问团队代码库的任何问题,获取深思熟虑的答案
+核心功能,概述,自动化繁琐任务,修复琐碎的 lint 问题、解决合并冲突、编写发布说明
+核心功能,概述,Unix 哲学,可组合和可脚本化,"支持管道输入，如 tail -f app.log | claude -p ""Slack me if you see any anomalies"""
+核心功能,概述,企业就绪,支持 Claude API、AWS 或 GCP,企业级安全、隐私和合规
+安装,方式,NPM 安装,npm install -g @anthropic-ai/claude-code,需要 Node.js 18 或更新版本
+安装,方式,Homebrew 安装,brew install --cask claude-code,适用于 macOS、Linux
+安装,方式,curl 安装,curl -fsSL https://claude.ai/install.sh | bash,适用于 macOS、Linux、WSL
+安装,方式,PowerShell 安装,irm https://claude.ai/install.ps1 | iex,适用于 Windows PowerShell
+安装,方式,CMD 安装,curl -fsSL https://claude.ai/install.cmd -o install.cmd && install.cmd,适用于 Windows CMD
+安装,账户类型,Claude.ai,订阅计划（推荐）,支持 Pro、Max、Team 计划
+安装,账户类型,Claude Console,API 访问（预付费信用）,适合企业用户
+安装,登录,/login,首次使用时提示登录,凭证存储在本地
+CLI 命令,基本命令,claude,启动交互式 REPL,claude
+CLI 命令,基本命令,claude "query",使用初始提示启动 REPL,claude "explain this project"
+CLI 命令,基本命令,claude -p "query",通过 SDK 查询然后退出,claude -p "explain this function"
+CLI 命令,基本命令,cat file | claude -p "query",处理管道内容,cat logs.txt | claude -p "explain"
+CLI 命令,基本命令,claude -c,继续最近的对话,claude -c
+CLI 命令,基本命令,claude -r "<session-id>" "query",按 ID 恢复会话,claude -r "abc123" "Finish this PR"
+CLI 命令,基本命令,claude update,更新到最新版本,claude update
+CLI 命令,基本命令,claude mcp,配置 MCP 服务器,用于 Model Context Protocol 配置
+CLI 命令,CLI 标志,--add-dir,添加额外工作目录,claude --add-dir ../apps ../lib
+CLI 命令,CLI 标志,--agents,动态定义自定义子代理,JSON 格式配置
+CLI 命令,CLI 标志,--allowedTools,允许无需权限的工具列表,"Bash(git log:*) ""Bash(git diff:*)""Read"""
+CLI 命令,CLI 标志,--disallowedTools,禁止的工具列表,"Bash(git log:*) ""Read(./.env)"""
+CLI 命令,CLI 标志,--print/-p,打印响应无需交互模式,claude -p "query"
+CLI 命令,CLI 标志,--output-format,指定输出格式,text/json/stream-json
+CLI 命令,CLI 标志,--input-format,指定输入格式,text/stream-json
+CLI 命令,CLI 标志,--verbose,启用详细日志,显示完整的轮次输出
+CLI 命令,CLI 标志,--max-turns,限制代理轮次数量,claude -p --max-turns 3 "query"
+CLI 命令,CLI 标志,--model,设置会话模型,sonnet/opus 或完整模型名
+CLI 命令,CLI 标志,--permission-mode,开始指定的权限模式,plan/acceptEdits/bypassPermissions
+CLI 命令,CLI 标志,--permission-prompt-tool,非交互模式下的权限提示工具,MCP 工具处理
+CLI 命令,CLI 标志,--resume,按 ID 恢复特定会话,claude --resume abc123 "query"
+CLI 命令,CLI 标志,--continue,加载当前目录的最近对话,claude --continue
+CLI 命令,CLI 标志,--dangerously-skip-permissions,跳过权限提示（谨慎使用）,claude --dangerously-skip-permissions
+斜杠命令,内置命令,/add-dir,添加额外工作目录,添加 Claude 可访问的工作目录
+斜杠命令,内置命令,/agents,管理自定义 AI 子代理,用于专门任务
+斜杠命令,内置命令,/bug,报告错误,将对话发送给 Anthropic
+斜杠命令,内置命令,/clear,清除对话历史,清除会话中的对话
+斜杠命令,内置命令,/compact [instructions],压缩对话（可选重点指令）,聚焦压缩指令
+斜杠命令,内置命令,/config,打开设置界面（配置选项卡）,配置 Claude Code
+斜杠命令,内置命令,/cost,显示令牌使用统计,查看成本和令牌消耗
+斜杠命令,内置命令,/doctor,检查 Claude Code 安装健康,诊断安装问题
+斜杠命令,内置命令,/help,获取使用帮助,显示可用命令
+斜杠命令,内置命令,/init,使用 CLAUDE.md 指南初始化项目,创建项目记忆
+斜杠命令,内置命令,/login,切换 Anthropic 账户,更改登录账户
+斜杠命令,内置命令,/logout,从 Anthropic 账户登出,注销账户
+斜杠命令,内置命令,/mcp,管理 MCP 服务器连接和 OAuth,配置 Model Context Protocol
+斜杠命令,内置命令,/memory,编辑 CLAUDE.md 记忆文件,管理项目记忆
+斜杠命令,内置命令,/model,选择或更改 AI 模型,切换使用的模型
+斜杠命令,内置命令,/permissions,查看或更新权限,配置 IAM 权限
+斜杠命令,内置命令,/pr_comments,查看拉取请求评论,查看 PR 评论
+斜杠命令,内置命令,/review,请求代码审查,执行代码审查
+斜杠命令,内置命令,/rewind,倒带对话和/或代码,恢复到之前状态
+斜杠命令,内置命令,/status,打开设置界面（状态选项卡）,显示版本、模型、账户
+斜杠命令,内置命令,/terminal-setup,安装 Shift+Enter 键绑定,仅限 iTerm2 和 VSCode
+斜杠命令,内置命令,/usage,显示计划使用限制和速率限制状态,仅限订阅计划
+斜杠命令,内置命令,/vim,进入 vim 模式,交替插入和命令模式
+斜杠命令,自定义命令,项目命令,存储在仓库中与团队共享,.claude/commands/
+斜杠命令,自定义命令,个人命令,跨所有项目可用,~/.claude/commands/
+斜杠命令,自定义命令,命名空间,子目录组织,frontend/component.md 创建 /component
+斜杠命令,自定义命令,参数,$ARGUMENTS 捕获所有参数,$ARGUMENTS 变为所有参数
+斜杠命令,自定义命令,参数,$1, $2 位置参数,$1 变为第一个参数
+斜杠命令,自定义命令,Bash 命令执行,使用 ! 前缀,输出包含在命令上下文中
+斜杠命令,自定义命令,文件引用,使用 @ 前缀引用文件,@src/utils/helpers.js
+斜杠命令,自定义命令,思考模式,触发扩展思考,包含扩展思考关键词
+斜杠命令,自定义命令,Frontmatter,allowed-tools,允许的工具列表,从对话继承
+斜杠命令,自定义命令,Frontmatter,argument-hint,参数提示,显示在自动完成中
+斜杠命令,自定义命令,Frontmatter,description,命令的简要描述,用于自动完成
+斜杠命令,自定义命令,Frontmatter,model,特定模型字符串,继承对话模型
+斜杠命令,自定义命令,Frontmatter,disable-model-invocation,防止 SlashCommand 工具调用,false
+斜杠命令,插件命令,命名空间,/plugin-name:command-name,避免冲突
+斜杠命令,插件命令,自动可用,安装后出现在 /help 中,完全集成
+斜杠命令,MCP 命令,格式,/mcp__<server>__<prompt-name>,动态发现
+斜杠命令,MCP 命令,参数,/mcp__github__pr_review 456,接受参数
+斜杠命令,MCP 命令,OAuth 认证,/mcp 命令进行认证,安全的 OAuth 2.0
+工具系统,内置工具,Bash,在环境中执行 shell 命令,需要权限
+工具系统,内置工具,Edit,对特定文件进行定向编辑,需要权限
+工具系统,内置工具,Glob,基于模式匹配查找文件,无需权限
+工具系统,内置工具,Grep,在文件内容中搜索模式,无需权限
+工具系统,内置工具,NotebookEdit,修改 Jupyter notebook 单元格,需要权限
+工具系统,内置工具,NotebookRead,读取和显示 Jupyter notebook 内容,无需权限
+工具系统,内置工具,Read,读取文件内容,无需权限
+工具系统,内置工具,SlashCommand,运行自定义斜杠命令,需要权限
+工具系统,内置工具,Task,运行子代理处理复杂任务,无需权限
+工具系统,内置工具,TodoWrite,创建和管理结构化任务列表,无需权限
+工具系统,内置工具,WebFetch,从指定 URL 获取内容,需要权限
+工具系统,内置工具,WebSearch,执行带域过滤的网页搜索,需要权限
+工具系统,内置工具,Write,创建或覆盖文件,需要权限
+工具系统,权限配置,allow,允许工具使用规则,前缀匹配
+工具系统,权限配置,ask,请求确认的规则,工具使用时询问
+工具系统,权限配置,deny,禁止工具使用规则,阻止敏感文件访问
+插件系统,概述,插件扩展,通过自定义命令、代理、钩子和 MCP 服务器扩展
+插件系统,概述,插件市场,从市场安装预构建插件,插件目录
+插件系统,概述,团队工作流,在仓库级别配置插件,确保团队工具一致
+插件系统,组件,命令,commands/ 目录中的 Markdown 文件,自定义斜杠命令
+插件系统,组件,代理,agents/ 目录中的代理定义,专门的 AI 助手
+插件系统,组件,技能,skills/ 目录中的 SKILL.md 文件,模型调用的能力
+插件系统,组件,钩子,hooks/hooks.json,事件处理器
+插件系统,组件,MCP 服务器,.mcp.json 或内联配置,外部工具集成
+插件系统,插件清单,plugin.json,插件元数据,name, description, version, author
+插件系统,市场配置,marketplace.json,市场清单,name, owner, plugins
+插件系统,管理命令,/plugin marketplace add,添加市场,/plugin marketplace add path
+插件系统,管理命令,/plugin install,安装插件,/plugin install plugin-name@marketplace
+插件系统,管理命令,/plugin enable,启用已禁用的插件,/plugin enable plugin@market
+插件系统,管理命令,/plugin disable,禁用插件（不卸载）,/plugin disable plugin@market
+插件系统,管理命令,/plugin uninstall,完全卸载插件,/plugin uninstall plugin@market
+技能系统,概述,Agent Skills,模块化能力包,扩展 Claude 功能
+技能系统,概述,模型调用,Claude 自主决定何时使用,基于任务上下文
+技能系统,个人技能,~/.claude/skills/,跨所有项目可用,个人工作流
+技能系统,项目技能,.claude/skills/,与团队共享,团队约定
+技能系统,插件技能,插件捆绑,插件安装时自动可用
+技能系统,SKILL.md 格式,YAML frontmatter,name, description, allowed-tools
+技能系统,SKILL.md 内容,说明,Claude 的逐步指导,清晰的步骤
+技能系统,SKILL.md 内容,示例,具体使用示例,展示用法
+技能系统,allowed-tools,限制工具访问,仅限指定的工具,安全工作流
+技能系统,支持文件,reference.md, examples.md, scripts/, templates/,渐进式披露
+子代理系统,概述,专门 AI 助手,任务特定工作流和上下文管理
+子代理系统,优势,上下文保留,独立上下文窗口,防止主对话污染
+子代理系统,优势,专门专业知识,针对特定领域的微调指令
+子代理系统,优势,可重用性,跨项目使用和共享
+子代理系统,优势,灵活权限,每个代理不同的工具访问级别
+子代理系统,位置,项目子代理,.claude/agents/,当前项目可用,优先级最高
+子代理系统,位置,用户子代理,~/.claude/agents/,跨所有项目可用,优先级较低
+子代理系统,CLI 定义,--agents 标志,动态 JSON 定义,会话特定代理
+子代理系统,文件格式,Markdown + YAML frontmatter,name, description, tools, model
+子代理系统,配置字段,name,唯一标识符,小写字母和连字符
+子代理系统,配置字段,description,子代理目的的自然语言描述,何时调用
+子代理系统,配置字段,tools,逗号分隔的工具列表,省略则继承所有工具
+子代理系统,配置字段,model,模型别名或 'inherit',省略则使用默认子代理模型
+子代理系统,自动委托,基于任务描述和描述字段,按需委托
+子代理系统,显式调用,提及子代理名称,"Use the code-reviewer subagent"
+钩子系统,概述,事件处理器,在工具执行前后运行自定义命令
+钩子系统,配置位置,settings.json,hooks 字段,事件匹配器
+钩子系统,配置位置,项目钩子,.claude/hooks/hooks.json,项目级别
+钩子系统,配置位置,用户钩子,~/.claude/hooks/hooks.json,用户级别
+钩子系统,配置位置,插件钩子,插件的 hooks/hooks.json,自动合并
+钩子系统,匹配器,PreToolUse,工具执行前运行,Bash, Glob, Grep, Read, Edit, Write, WebFetch, WebSearch
+钩子系统,匹配器,PostToolUse,工具成功执行后运行,同 PreToolUse
+钩子系统,匹配器,Notification,发送通知时运行,权限提示或空闲时
+钩子系统,匹配器,UserPromptSubmit,用户提交提示时运行,添加上下文或验证
+钩子系统,匹配器,Stop,主 Claude Code 代理完成响应时运行,不包括用户中断
+钩子系统,匹配器,SubagentStop,子代理完成响应时运行,子代理停止
+钩子系统,匹配器,PreCompact,压缩操作前运行,manual/auto
+钩子系统,匹配器,SessionStart,启动新会话时运行,startup/resume/clear/compact
+钩子系统,匹配器,SessionEnd,会话结束时运行,清理任务,日志记录
+钩子系统,匹配器格式,简单字符串,完全匹配,Write 仅匹配 Write 工具
+钩子系统,匹配器格式,正则表达式,Edit|Write 或 Notebook.*,模式匹配
+钩子系统,匹配器格式,通配符,* 匹配所有工具,或空字符串
+钩子系统,钩子类型,command,bash 命令,type: "command"
+钩子系统,钩子参数,command,要执行的命令,可使用环境变量
+钩子系统,钩子参数,timeout,命令超时（秒）,默认 60 秒
+钩子系统,环境变量,CLAUDE_PROJECT_DIR,项目根目录,项目钩子的绝对路径
+钩子系统,环境变量,CLAUDE_PLUGIN_ROOT,插件目录,插件钩子专用
+钩子系统,退出码,0,成功,stdout 显示给用户（特定钩子除外）
+钩子系统,退出码,2,阻止错误,stderr 反馈给 Claude,阻止工具调用
+钩子系统,退出码,其他,非阻止错误,stderr 显示给用户
+钩子系统,JSON 输出,continue,是否继续,默认 true
+钩子系统,JSON 输出,stopReason,停止原因,continue 为 false 时显示
+钩子系统,JSON 输出,suppressOutput,隐藏 stdout,默认 false
+钩子系统,JSON 输出,systemMessage,警告消息,显示给用户
+钩子系统,PreToolUse 决策,permissionDecision,allow/deny/ask,允许/拒绝/询问
+钩子系统,PostToolUse 决策,decision,block/undefined,阻止/无操作
+钩子系统,安全考虑,USE AT YOUR OWN RISK,自行承担风险,执行任意 shell 命令
+钩子系统,安全最佳实践,验证和清理输入,从不信任输入数据
+钩子系统,安全最佳实践,引用 shell 变量,使用 "$VAR" 而非 $VAR
+钩子系统,安全最佳实践,阻止路径遍历,检查 .. 在文件路径中
+钩子系统,安全最佳实践,使用绝对路径,使用 "$CLAUDE_PROJECT_DIR"
+钩子系统,安全最佳实践,跳过敏感文件,避免 .env, .git/, 密钥
+MCP 集成,概述,Model Context Protocol,连接外部工具和数据源
+MCP 集成,能力,实现功能,从 issue 跟踪器实现功能,"Add the feature from JIRA ENG-4521"
+MCP 集成,能力,分析监控数据,检查 Sentry 和 Statsig,检查功能使用情况
+MCP 集成,能力,查询数据库,Postgres 数据库查询,查找用户或分析数据
+MCP 集成,能力,集成设计,更新 Figma 设计模板,基于 Slack 中的设计
+MCP 集成,能力,自动化工作流,创建 Gmail 草稿,邀请用户反馈会话
+MCP 集成,HTTP 服务器,推荐选项,cloud-based 服务,最广泛支持
+MCP 集成,HTTP 命令,claude mcp add --transport http,claude mcp add --transport http notion https://mcp.notion.com/mcp
+MCP 集成,SSE 服务器,已弃用,使用 HTTP 服务器替代
+MCP 集成,SSE 命令,claude mcp add --transport sse,claude mcp add --transport sse asana https://mcp.asana.com/sse
+MCP 集成,stdio 服务器,本地进程,需要直接系统访问
+MCP 集成,stdio 命令,claude mcp add --transport stdio,claude mcp add --transport stdio airtable --env KEY=value -- npx -y airtable-mcp-server
+MCP 集成,管理,claude mcp list,列出所有服务器,查看配置的服务器
+MCP 集成,管理,claude mcp get,获取服务器详情,claude mcp get github
+MCP 集成,管理,claude mcp remove,删除服务器,claude mcp remove github
+MCP 集成,作用域,local,默认,项目特定的用户设置,仅当前项目
+MCP 集成,作用域,project,团队共享,.mcp.json 文件,版本控制
+MCP 集成,作用域,user,跨项目,用户配置,所有项目可用
+MCP 集成,OAuth 认证,/mcp 命令,Authenticate with remote servers,安全的 OAuth 2.0
+MCP 集成,MCP 工具命名,mcp__<server>__<tool>,特殊命名模式,mcp__github__search_repositories
+MCP 集成,MCP 资源,@ 引用,@server:protocol://resource/path,类似于文件引用
+MCP 集成,MCP 提示,斜杠命令,/mcp__<server>__<prompt>,动态发现的提示
+MCP 集成,插件 MCP,插件捆绑,自动提供工具,启用时启动
+MCP 集成,企业 MCP,managed-mcp.json,IT 管理员部署,macOS/Linux/Windows
+MCP 集成,企业允许列表,allowedMcpServers,允许的服务器列表,[] 锁定
+MCP 集成,企业拒绝列表,deniedMcpServers,阻止的服务器列表,优先级高于允许列表
+MCP 集成,环境变量,MCP_TIMEOUT,服务器启动超时,毫秒
+MCP 集成,环境变量,MCP_TOOL_TIMEOUT,工具执行超时,毫秒
+MCP 集成,环境变量,MAX_MCP_OUTPUT_TOKENS,最大输出令牌,默认 25000
+设置系统,用户设置,~/.claude/settings.json,全局设置,所有项目
+设置系统,项目设置,.claude/settings.json,团队共享,源代码控制
+设置系统,本地设置,.claude/settings.local.json,个人偏好,不提交
+设置系统,企业策略,managed-settings.json,IT/DevOps 部署,优先级最高
+设置系统,设置优先级,企业策略 > CLI 参数 > 本地 > 项目 > 用户,层次结构
+设置系统,apiKeyHelper,自定义认证脚本,/bin/generate_temp_api_key.sh
+设置系统,cleanupPeriodDays,本地保留会话的天数,默认 30 天
+设置系统,env,环境变量,应用于每个会话,FOO: bar
+设置系统,includeCoAuthoredBy,包含 co-authored-by,git 提交中的署名,默认 true
+设置系统,permissions,权限配置,allow/ask/deny/other,工具权限规则
+设置系统,hooks,钩子配置,事件和命令,PreToolUse/PostToolUse
+设置系统,disableAllHooks,禁用所有钩子,true
+设置系统,model,默认模型,claude-sonnet-4-5-20250929,覆盖默认模型
+设置系统,statusLine,自定义状态行,命令或文件,显示上下文
+设置系统,outputStyle,输出样式,Explanatory,调整系统提示
+设置系统,forceLoginMethod,强制登录方法,claudeai/console,限制登录类型
+设置系统,forceLoginOrgUUID,组织 UUID,自动选择组织,绕过组织选择
+设置系统,enableAllProjectMcpServers,自动批准项目 MCP,true
+设置系统,enabledMcpjsonServers,特定 MCP 服务器,["memory", "github"]
+设置系统,disabledMcpjsonServers,禁用 MCP 服务器,["filesystem"]
+设置系统,awsAuthRefresh,AWS 凭证刷新脚本,aws sso login --profile myprofile
+设置系统,awsCredentialExport,AWS 凭证导出脚本,/bin/generate_aws_grant.sh
+设置系统,enabledPlugins,启用的插件,plugin-name@marketplace: true/false
+设置系统,extraKnownMarketplaces,额外的已知市场,市场来源配置
+权限系统,概述,基于权限的架构,默认只读权限,显式批准操作
+权限系统,权限模式,acceptEdits,接受编辑模式,批量接受编辑
+权限系统,权限模式,plan,计划模式,规划不执行
+权限系统,权限模式,bypassPermissions,绕过权限,谨慎使用
+权限系统,权限规则,allow,允许规则,Bash(git add:*), Bash(git test:*)
+权限系统,权限规则,ask,询问规则,Bash(git push:*)
+权限系统,权限规则,deny,拒绝规则,WebFetch, Bash(curl:*), Read(./.env)
+权限系统,additionalDirectories,额外工作目录,["../docs/"]
+权限系统,defaultMode,默认权限模式,acceptEdits
+权限系统,disableBypassPermissionsMode,禁用绕过权限模式,disable
+权限系统,工作目录限制,写访问限制,仅限启动文件夹和子文件夹,无法修改父目录
+权限系统,提示疲劳缓解,支持允许列表,频繁使用的安全命令,per-user/codebase/org
+记忆管理,企业策略,/Library/Application Support/ClaudeCode/CLAUDE.md (macOS),组织级指令,所有用户
+记忆管理,项目记忆,./CLAUDE.md 或 ./.claude/CLAUDE.md,团队共享,源代码控制
+记忆管理,用户记忆,~/.claude/CLAUDE.md,个人偏好,所有项目
+记忆管理,本地项目记忆,./CLAUDE.local.md,已弃用,个人项目偏好
+记忆管理,层次结构,企业 > 项目 > 用户,高优先级先加载,特定记忆构建其上
+记忆管理,导入,@path/to/import,引用其他文件,最多 5 层递归
+记忆管理,快捷键,# 快捷方式,快速添加记忆,提示选择文件
+记忆管理,命令,/memory,直接编辑记忆文件,在系统编辑器中打开
+记忆管理,初始化,/init,引导 CLAUDE.md,为代码库创建记忆
+记忆管理,递归查找,从 cwd 向上查找,在大型仓库中方便,foo/CLAUDE.md, foo/bar/CLAUDE.md
+记忆管理,最佳实践,具体,使用 2 空格缩进,优于正确格式化代码
+记忆管理,最佳实践,结构化,markdown 标题分组,相关记忆组织
+记忆管理,最佳实践,定期审查,项目演进时更新,确保最新信息
+交互模式,键盘快捷键,Ctrl+C,取消当前输入或生成,标准中断
+交互模式,键盘快捷键,Ctrl+D,退出 Claude Code 会话,EOF 信号
+交互模式,键盘快捷键,Ctrl+L,清除终端屏幕,保留对话历史
+交互模式,键盘快捷键,Ctrl+O,切换详细输出,显示工具使用详情
+交互模式,键盘快捷键,Ctrl+R,反向搜索命令历史,交互式搜索
+交互模式,键盘快捷键,Ctrl+V / Alt+V,从剪贴板粘贴图像,图像或路径
+交互模式,键盘快捷键,Esc + Esc,倒带代码/对话,恢复到之前点
+交互模式,键盘快捷键,Tab,切换扩展思考,Thinking on/off
+交互模式,键盘快捷键,Shift+Tab / Alt+M,切换权限模式,Auto-Accept/Plan/Normal
+交互模式,多行输入,\ + Enter,快速转义,所有终端
+交互模式,多行输入,Option+Enter,macOS 默认
+交互模式,多行输入,Shift+Enter,终端设置后,/terminal-setup
+交互模式,多行输入,Ctrl+J,控制序列,换行符
+交互模式,快速命令,# 开头,记忆快捷方式,添加到 CLAUDE.md
+交互模式,快速命令,/ 开头,斜杠命令,自定义命令
+交互模式,快速命令,! 开头,Bash 模式,直接运行命令
+交互模式,快速命令,@,文件路径提及,触发文件路径自动完成
+交互模式,Vim 模式,/vim,启用 vim 风格编辑,或永久配置
+交互模式,Vim 模式,Esc,进入 NORMAL 模式,从 INSERT
+交互模式,Vim 模式,i,在光标前插入,NORMAL 模式
+交互模式,Vim 模式,I,在行首插入,NORMAL 模式
+交互模式,Vim 模式,a,在光标后插入,NORMAL 模式
+交互模式,Vim 模式,A,在行尾插入,NORMAL 模式
+交互模式,Vim 模式,h/j/k/l,左/下/上/右移动,NORMAL 模式
+交互模式,Vim 模式,w,下一个单词,NORMAL 模式
+交互模式,Vim 模式,b,上一个单词,NORMAL 模式
+交互模式,Vim 模式,0,行首,NORMAL 模式
+交互模式,Vim 模式,$,行尾,NORMAL 模式
+交互模式,Vim 模式,gg,输入开始,NORMAL 模式
+交互模式,Vim 模式,G,输入结束,NORMAL 模式
+交互模式,Vim 模式,x,删除字符,NORMAL 模式
+交互模式,Vim 模式,dd,删除行,NORMAL 模式
+交互模式,Vim 模式,D,删除到行尾,NORMAL 模式
+交互模式,Vim 模式,cc,更改行,NORMAL 模式
+交互模式,Vim 模式,.,重复上次更改,NORMAL 模式
+交互模式,命令历史,存储位置,按工作目录,清除 /clear 后清除
+交互模式,命令历史,反向搜索,Ctrl+R,交互式搜索,高亮显示
+交互模式,后台 Bash,Ctrl+B,移动到后台,异步运行
+交互模式,后台 Bash,常见命令,webpack, npm, jest, docker, terraform,构建工具
+检查点系统,概述,自动跟踪,跟踪 Claude 的文件编辑,恢复机制
+检查点系统,自动跟踪,每个用户提示,创建新检查点
+检查点系统,自动跟踪,跨会话持久化,恢复的对话中可访问
+检查点系统,自动跟踪,自动清理,30 天后（可配置）
+检查点系统,倒带,Esc + Esc 或 /rewind,打开倒带菜单
+检查点系统,倒带选项,仅对话,倒带到用户消息,保持代码更改
+检查点系统,倒带选项,仅代码,恢复文件,保持对话
+检查点系统,倒带选项,两者,恢复两者到之前的点
+检查点系统,用例,探索替代方案,尝试不同的实现,保留起点
+检查点系统,用例,恢复错误,快速撤销更改,修复引入的 bug
+检查点系统,用例,迭代功能,实验变体,恢复到工作状态
+检查点系统,限制,Bash 命令更改不跟踪,rm, mv, cp 等无法撤消
+检查点系统,限制,外部更改不跟踪,手动更改或并发会话
+检查点系统,限制,不是版本控制替代,使用 Git 进行永久历史
+IDE 集成,VS Code,扩展 (Beta),原生 IDE 体验,专用侧边栏
+IDE 集成,VS Code,功能,计划模式编辑,审查和编辑 Claude 的计划
+IDE 集成,VS Code,功能,自动接受编辑模式,自动应用 Claude 的更改
+IDE 集成,VS Code,功能,文件管理,@ 提及文件或附加文件
+IDE 集成,VS Code,功能,MCP 服务器,使用 CLI 配置的 MCP
+IDE 集成,VS Code,功能,对话历史,访问过去的对话
+IDE 集成,VS Code,功能,多会话,同时运行多个会话
+IDE 集成,VS Code,功能,键盘快捷键,支持 CLI 快捷键
+IDE 集成,VS Code,功能,斜杠命令,直接访问 CLI 命令
+IDE 集成,VS Code,要求,VS Code 1.98.0+,版本要求
+IDE 集成,VS Code,安装,Marketplace,从市场安装
+IDE 集成,VS Code,更新,Cmd+Shift+P (Mac) / Ctrl+Shift+P (Win/Linux),"Claude Code: Update"
+IDE 集成,VS Code,第三方提供商,Vertex/Bedrock,通过环境变量配置
+IDE 集成,VS Code,安全考虑,受限模式,不受信任的工作区
+IDE 集成,VS Code,安全考虑,手动批准,编辑的手动批准模式
+IDE 集成,VS Code,遗留 CLI 集成,自动安装,从集成终端运行时
+IDE 集成,VS Code,遗留 CLI 集成,选择上下文,当前选择/选项卡自动共享
+IDE 集成,VS Code,遗留 CLI 集成,差异查看,IDE 差异查看器而非终端
+IDE 集成,VS Code,遗留 CLI 集成,文件引用,Cmd+Option+K (Mac) / Alt+Ctrl+K (Win),@File#L1-99
+IDE 集成,VS Code,遗留 CLI 集成,诊断共享,lint 和语法错误自动共享
+IDE 集成,VS Code,支持的 IDE,VS Code, Cursor, Windsurf, VSCodium
+IDE 集成,JetBrains,插件,专用插件,交互式差异查看
+IDE 集成,JetBrains,支持的 IDE,IntelliJ, PyCharm, Android Studio, WebStorm, PhpStorm, GoLand
+IDE 集成,JetBrains,功能,快速启动,Cmd+Esc (Mac) / Ctrl+Esc (Win/Linux)
+IDE 集成,JetBrains,功能,差异查看,IDE 差异查看器
+IDE 集成,JetBrains,功能,选择上下文,当前选择/选项卡自动共享
+IDE 集成,JetBrains,功能,文件引用,Cmd+Option+K (Mac) / Alt+Ctrl+K (Win),@File#L1-99
+IDE 集成,JetBrains,功能,诊断共享,lint 和语法错误自动共享
+IDE 集成,JetBrains,安装,Marketplace,从 JetBrains 市场安装
+IDE 集成,JetBrains,安装,自动安装,从集成终端运行时（需重启 IDE）
+IDE 集成,JetBrains,配置,Claude 命令,claude 或 /usr/local/bin/claude 或 npx @anthropic/claude
+IDE 集成,JetBrains,配置,WSL,wsl -d Ubuntu -- bash -lic "claude",WSL 用户
+IDE 集成,JetBrains,配置,ESC 键,取消勾选将焦点移动到编辑器,终端设置
+IDE 集成,JetBrains,远程开发,插件安装在远程主机,Settings → Plugin (Host)
+IDE 集成,JetBrains,安全考虑,自动编辑模式,可能修改 IDE 配置文件
+云提供商,AWS Bedrock,前提条件,AWS 账户,Bedrock 访问,模型访问,IAM 权限
+云提供商,AWS Bedrock,启用模型访问,Bedrock Console → Model access,请求访问 Claude 模型
+云提供商,AWS Bedrock,凭证配置,AWS CLI,aws configure
+云提供商,AWS Bedrock,凭证配置,环境变量,AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
+云提供商,AWS Bedrock,凭证配置,SSO 配置,aws sso login --profile=<profile-name>
+云提供商,AWS Bedrock,凭证配置,Bedrock API Keys,AWS_BEARER_TOKEN_BEDROCK,简化认证
+云提供商,AWS Bedrock,高级凭证,awsAuthRefresh,修改 .aws 目录的脚本
+云提供商,AWS Bedrock,高级凭证,awsCredentialExport,直接返回凭证 JSON,输出被捕获
+云提供商,AWS Bedrock,环境变量,CLAUDE_CODE_USE_BEDROCK,启用 Bedrock,设置为 1
+云提供商,AWS Bedrock,环境变量,AWS_REGION,必需,us-east-1 等
+云提供商,AWS Bedrock,环境变量,ANTHROPIC_SMALL_FAST_MODEL_AWS_REGION,Haiku 区域覆盖
+云提供商,AWS Bedrock,默认模型,Primary,global.anthropic.claude-sonnet-4-5-20250929-v1:0
+云提供商,AWS Bedrock,默认模型,Small/Fast,us.anthropic.claude-haiku-4-5-20251001-v1:0
+云提供商,AWS Bedrock,模型配置,ANTHROPIC_MODEL,覆盖主模型,global.anthropic.claude-sonnet-4-5-20250929-v1:0
+云提供商,AWS Bedrock,模型配置,inference profile ARN,arn:aws:bedrock:*:*:application-inference-profile/...
+云提供商,AWS Bedrock,输出令牌,CLAUDE_CODE_MAX_OUTPUT_TOKENS,推荐 4096,Burndown 限流
+云提供商,AWS Bedrock,输出令牌,MAX_THINKING_TOKENS,推荐 1024,平衡推理和工具使用
+云提供商,AWS Bedrock,IAM 权限,bedrock:InvokeModel,必需
+云提供商,AWS Bedrock,IAM 权限,bedrock:InvokeModelWithResponseStream,必需
+云提供商,AWS Bedrock,IAM 权限,bedrock:ListInferenceProfiles,必需
+云提供商,AWS Bedrock,/login 和 /logout,已禁用,通过 AWS 凭证处理认证
+云提供商,Google Vertex AI,前提条件,GCP 账户,计费启用,Vertex AI API,模型访问,SDK,配额
+云提供商,Google Vertex AI,区域配置,global 和 regional,全局和区域端点
+云提供商,Google Vertex AI,启用 API,gcloud services enable aiplatform.googleapis.com
+云提供商,Google Vertex AI,请求模型访问,Vertex AI Model Garden,24-48 小时
+云提供商,Google Vertex AI,认证,Google Cloud 标准,默认使用项目 ID
+云提供商,Google Vertex AI,环境变量,CLAUDE_CODE_USE_VERTEX,启用 Vertex,设置为 1
+云提供商,Google Vertex AI,环境变量,CLOUD_ML_REGION,区域,global 或 us-east5
+云提供商,Google Vertex AI,环境变量,ANTHROPIC_VERTEX_PROJECT_ID,GCP 项目 ID
+云提供商,Google Vertex AI,环境变量,VERTEX_REGION_CLAUDE_3_5_HAIKU,区域覆盖,us-east5
+云提供商,Google Vertex AI,环境变量,VERTEX_REGION_CLAUDE_3_5_SONNET,区域覆盖,us-east5
+云提供商,Google Vertex AI,环境变量,VERTEX_REGION_CLAUDE_3_7_SONNET,区域覆盖,us-east5
+云提供商,Google Vertex AI,环境变量,VERTEX_REGION_CLAUDE_4_0_OPUS,区域覆盖,europe-west1
+云提供商,Google Vertex AI,环境变量,VERTEX_REGION_CLAUDE_4_0_SONNET,区域覆盖,us-east5
+云提供商,Google Vertex AI,环境变量,VERTEX_REGION_CLAUDE_4_1_OPUS,区域覆盖,europe-west1
+云提供商,Google Vertex AI,默认模型,Primary,claude-sonnet-4-5@20250929
+云提供商,Google Vertex AI,默认模型,Small/Fast,claude-haiku-4-5@20251001
+云提供商,Google Vertex AI,模型配置,ANTHROPIC_MODEL,claude-opus-4-1@20250805
+云提供商,Google Vertex AI,IAM 角色,roles/aiplatform.user,aiplatform.endpoints.predict
+云提供商,Google Vertex AI,IAM 角色,roles/aiplatform.user,aiplatform.endpoints.computeTokens
+云提供商,Google Vertex AI,1M 令牌上下文,Claude Sonnet 4/4.5 支持,Beta,需 beta 头
+云提供商,Google Vertex AI,/login 和 /logout,已禁用,通过 Google Cloud 凭证处理认证
+CI/CD 集成,概述,基于 SDK,构建在 Claude Code CLI 和 SDK 上,程序化集成
+CI/CD 集成,概述,事件驱动编排,GitLab/GitHub 监听触发器,@claude 提及
+CI/CD 集成,概述,提供商抽象,Claude API/AWS Bedrock/Google Vertex AI
+CI/CD 集成,概述,沙箱执行,隔离容器中的 CI/CD 作业,严格网络和文件系统规则
+CI/CD 集成,GitHub Actions,快速设置,/install-github-app,引导式设置
+CI/CD 集成,GitHub Actions,手动设置,安装 GitHub App,添加 ANTHROPIC_API_KEY secret,复制 workflow
+CI/CD 集成,GitHub Actions,权限,Contents: Read & Write,Issues: Read & Write,Pull Requests: Read & Write
+CI/CD 集成,GitHub Actions,触发器,issue_comment,pull_request_review_comment,issues
+CI/CD 集成,GitHub Actions,触发器,@claude 提及,自动响应
+CI/CD 集成,GitHub Actions,从 Beta 升级,更改 @beta 到 @v1,删除 mode,重命名参数
+CI/CD 集成,GitHub Actions,新参数,prompt,所有指令
+CI/CD 集成,GitHub Actions,新参数,claude_args,CLI 参数传递
+CI/CD 集成,GitHub Actions,新参数,github_token,用于 API 访问
+CI/CD 集成,GitHub Actions,新参数,trigger_phrase,自定义触发短语,默认 @claude
+CI/CD 集成,GitHub Actions,新参数,use_bedrock,使用 AWS Bedrock,true
+CI/CD 集成,GitHub Actions,新参数,use_vertex,使用 Google Vertex AI,true
+CI/CD 集成,GitHub Actions,AWS Bedrock,OIDC,Workload Identity Federation,无静态密钥
+CI/CD 集成,GitHub Actions,AWS Bedrock,Secrets,AWS_ROLE_TO_ASSUME, AWS_REGION
+CI/CD 集成,GitHub Actions,AWS Bedrock,模型 ID,包含区域前缀和版本后缀,us.anthropic.claude...
+CI/CD 集成,GitHub Actions,Google Vertex AI,WIF,Workload Identity Federation,无下载密钥
+CI/CD 集成,GitHub Actions,Google Vertex AI,Secrets,GCP_WORKLOAD_IDENTITY_PROVIDER, GCP_SERVICE_ACCOUNT
+CI/CD 集成,GitHub Actions,自定义 GitHub App,推荐,更强的安全性和控制
+CI/CD 集成,GitHub Actions,成本考虑,GitHub Actions 分钟消耗,API 令牌使用
+CI/CD 集成,GitLab CI/CD,Beta,当前处于 Beta,功能演进
+CI/CD 集成,GitLab CI/CD,维护者,GitLab,通过 GitLab issue 获得支持
+CI/CD 集成,GitLab CI/CD,设置,添加 CI/CD 变量,ANTHROPIC_API_KEY (masked)
+CI/CD 集成,GitLab CI/CD,添加作业,复制到 .gitlab-ci.yml,ai stage
+CI/CD 集成,GitLab CI/CD,触发器,web,merge_request_event,@claude 提及
+CI/CD 集成,GitLab CI/CD,AI_FLOW 变量,AI_FLOW_INPUT,提示输入
+CI/CD 集成,GitLab CI/CD,AI_FLOW 变量,AI_FLOW_CONTEXT,上下文信息
+CI/CD 集成,GitLab CI/CD,AI_FLOW 变量,AI_FLOW_EVENT,事件类型
+CI/CD 集成,GitLab CI/CD,AWS Bedrock,OIDC,配置 GitLab → AWS OIDC,IAM 角色
+CI/CD 集成,GitLab CI/CD,AWS Bedrock,CI/CD 变量,AWS_ROLE_TO_ASSUME, AWS_REGION
+CI/CD 集成,GitLab CI/CD,Google Vertex AI,WIF,配置 GitLab → GCP WIF,服务账户
+CI/CD 集成,GitLab CI/CD,Google Vertex AI,CI/CD 变量,GCP_WORKLOAD_IDENTITY_PROVIDER, GCP_SERVICE_ACCOUNT
+CI/CD 集成,GitLab CI/CD,成本考虑,GitLab Runner 分钟,API 令牌使用
+CI/CD 集成,最佳实践,CLAUDE.md,定义代码标准,审查标准,项目规则
+CI/CD 集成,最佳实践,安全,使用 masked CI/CD 变量,OIDC/WIF,审查 MR
+CI/CD 集成,最佳实践,性能,保持 CLAUDE.md 简洁,配置超时,缓存 npm
+无头模式,概述,程序化运行,无需交互 UI,脚本和自动化
+无头模式,基本用法,claude -p,运行并打印结果,非交互模式
+无头模式,配置选项,--output-format,text/json/stream-json,输出格式
+无头模式,配置选项,--resume/-r,按会话 ID 恢复,claude --resume abc123
+无头模式,配置选项,--continue/-c,继续最近的对话,claude --continue
+无头模式,配置选项,--verbose,详细日志,调试信息
+无头模式,配置选项,--append-system-prompt,追加系统提示,自定义指令
+无头模式,配置选项,--allowedTools,允许的工具,Bash(*),Read(*)
+无头模式,配置选项,--disallowedTools,禁止的工具,mcp__splunk,mcp__github
+无头模式,配置选项,--mcp-config,MCP 配置文件,从 JSON 加载服务器
+无头模式,多轮对话,--continue,继续最近的对话,保持上下文
+无头模式,多轮对话,--resume,按 ID 恢复特定对话,会话持久性
+无头模式,输出格式,Text,默认,文本输出
+无头模式,输出格式,JSON,结构化数据,包含成本、持续时间、结果
+无头模式,输出格式,Stream-JSON,流式输出,每个消息单独 JSON 对象
+无头模式,输入格式,Text,默认,直接参数或 stdin
+无头模式,输入格式,Stream-JSON,jsonl 格式,多轮对话流
+无头模式,代理示例,SRE 事件响应,自动化诊断,评估影响,立即行动项
+无头模式,代理示例,安全审查,PR 审查,漏洞检测,合规检查
+无头模式,代理示例,多轮法律助手,会话持久性,审查合同,合规检查,生成摘要
+无头模式,最佳实践,JSON 输出,程序化解析,jq 工具
+无头模式,最佳实践,错误处理,检查退出码和 stderr,优雅处理
+无头模式,最佳实践,会话管理,多轮对话的上下文,会话 ID
+无头模式,最佳实践,超时考虑,long-running 操作,timeout 命令
+无头模式,最佳实践,速率限制,请求间延迟,避免超限
+安全和合规,概述,安全基础,Anthropic 安全计划,SOC 2 Type 2, ISO 27001
+安全和合规,概述,权限架构,默认只读权限,显式批准敏感操作
+安全和合规,概述,内置保护,写访问限制,提示疲劳缓解,接受编辑模式
+安全和合规,概述,用户责任,审查建议的代码和命令,安全批准
+安全和合规,提示注入保护,权限系统,敏感操作需要明确批准
+安全和合规,提示注入保护,上下文感知分析,检测有害指令
+安全和合规,提示注入保护,输入清理,防止命令注入
+安全和合规,提示注入保护,命令阻止列表,阻止 curl/wget,默认
+安全和合规,提示注入保护,网络请求批准,默认需要用户批准
+安全和合规,提示注入保护,隔离上下文窗口,Web fetch 单独上下文
+安全和合规,提示注入保护,信任验证,首次代码库/MCP 需要信任验证
+安全和合规,提示注入保护,命令注入检测,可疑 bash 命令需要手动批准
+安全和合规,提示注入保护,失败关闭匹配,未匹配命令默认手动批准
+安全和合规,提示注入保护,自然语言描述,复杂 bash 命令包含说明
+安全和合规,隐私保护,敏感信息有限保留期,Privacy Center
+安全和合规,隐私保护,受限访问,用户会话数据访问受限
+安全和合规,隐私保护,用户控制,训练偏好设置,可随时更改
+安全和合规,MCP 安全,用户配置,在源代码中配置,IT 审查
+安全和合规,MCP 安全,鼓励编写,自己编写或信任提供商,Anthropic 不审计
+安全和合规,IDE 安全,自动编辑模式风险,可能修改 IDE 配置文件
+安全和合规,IDE 安全,建议,受限模式,手动批准,额外谨慎
+安全和合规,安全最佳实践,审查更改,批准前审查
+安全和合规,安全最佳实践,项目特定权限,敏感仓库
+安全和合规,安全最佳实践,devcontainers,额外隔离
+安全和合规,安全最佳实践,审计权限,/permissions 定期审计
+安全和合规,团队安全,企业策略,强制组织标准,版本控制共享
+安全和合规,团队安全,培训,团队成员安全最佳实践培训
+安全和合规,团队安全,监控,OpenTelemetry 指标,跟踪和审计
+安全和合规,报告安全漏洞,HackerOne,不公开披露,详细重现步骤
+成本管理,概述,令牌消耗,每次交互消耗令牌,平均 $6/开发者/天
+成本管理,概述,团队成本,按 API 令牌消耗收费,约 $100-200/开发者/月
+成本管理,概述,/cost 命令,会话级统计,显示总成本、持续时间、代码更改
+成本管理,概述,历史使用,Claude Console,需要 Admin/Billing 角色
+成本管理,概述,工作区限制,Claude Code 工作区,设置支出限制,Admin 角色
+成本管理,团队管理,速率限制建议,TPM/RPM 按组织规模,1-5 用户: 200k-300k TPM, 5-7 RPM
+成本管理,团队管理,速率限制建议,5-20 用户: 100k-150k TPM, 2.5-3.5 RPM
+成本管理,团队管理,速率限制建议,20-50 用户: 50k-75k TPM, 1.25-1.75 RPM
+成本管理,团队管理,速率限制建议,50-100 用户: 25k-35k TPM, 0.62-0.87 RPM
+成本管理,团队管理,速率限制建议,100-500 用户: 15k-20k TPM, 0.37-0.47 RPM
+成本管理,团队管理,速率限制建议,500+ 用户: 10k-15k TPM, 0.25-0.35 RPM
+成本管理,减少令牌,压缩对话,/compact 或自动压缩,95% 容量时触发
+成本管理,减少令牌,切换自动压缩,/config → Auto-compact enabled
+成本管理,减少令牌,自定义指令,/compact Focus on code samples
+成本管理,减少令牌,CLAUDE.md,添加自定义压缩说明
+成本管理,减少令牌,具体查询,避免模糊请求,减少不必要扫描
+成本管理,减少令牌,分解复杂任务,专注交互,分割大型任务
+成本管理,减少令牌,清除历史,/clear 重置上下文,任务间清除
+成本管理,成本因素,代码库大小,查询复杂度,文件数量,对话长度,压缩频率
+成本管理,后台令牌,会话摘要,--resume 功能,后台作业
+成本管理,后台令牌,命令处理,/cost 等命令,请求检查状态
+成本管理,后台令牌,典型消耗,会话 $0.04 下,即使不活跃
+成本管理,版本跟踪,claude doctor,检查版本和安装详情
+成本管理,版本跟踪,/cost 显示,不同版本可能不同,访问最新文档
+分析,概述,使用洞察,组织部署的使用数据,productivity metrics
+分析,访问,console.anthropic.com/claude-code,分析仪表板
+分析,角色,Primary Owner,Owner,Billing,Admin,Developer,可访问
+分析,角色,User,Claude Code User,Membership Admin,不可访问
+分析,指标,接受的代码行数,Claude Code 编写且用户接受的代码行数,排除拒绝的代码
+分析,指标,建议接受率,用户接受代码编辑工具的百分比,Edit/Write/NotebookEdit
+分析,指标,活动,用户,每日活跃用户数,左 Y 轴
+分析,指标,活动,会话,每日活跃会话数,右 Y 轴
+分析,指标,支出,用户,每日活跃用户数,左 Y 轴
+分析,指标,支出,spend,每日总支出,右 Y 轴
+分析,指标,团队洞察,Members,所有认证用户,API key 用户显示标识符,OAuth 用户显示邮箱
+分析,指标,团队洞察,本月支出,本月每用户总支出,美元
+分析,指标,团队洞察,本月代码行数,本月每用户接受的总代码行数
+分析,有效使用,监控采用,跟踪成员状态,识别活跃用户,整体采用趋势
+分析,有效使用,衡量生产力,工具接受率,代码生成有效性,培训机会
+分析,相关资源,OpenTelemetry,自定义指标和警报,monitoring-usage
+分析,相关资源,IAM,角色配置,iam
+环境变量,API 相关,ANTHROPIC_API_KEY,API 密钥,X-Api-Key 头
+环境变量,API 相关,ANTHROPIC_AUTH_TOKEN,Authorization 头,值前缀 Bearer
+环境变量,API 相关,ANTHROPIC_CUSTOM_HEADERS,自定义头,Name: Value 格式
+环境变量,模型配置,ANTHROPIC_MODEL,模型设置名称,覆盖主模型
+环境变量,模型配置,ANTHROPIC_DEFAULT_HAIKU_MODEL,HAIKU 模型,覆盖 Haiku 模型
+环境变量,模型配置,ANTHROPIC_DEFAULT_OPUS_MODEL,Opus 模型,覆盖 Opus 模型
+环境变量,模型配置,ANTHROPIC_DEFAULT_SONNET_MODEL,Sonnet 模型,覆盖 Sonnet 模型
+环境变量,模型配置,ANTHROPIC_SMALL_FAST_MODEL,小/快模型,[已弃用] Haiku
+环境变量,模型配置,ANTHROPIC_SMALL_FAST_MODEL_AWS_REGION,AWS Haiku 区域,覆盖 Bedrock 区域
+环境变量,模型配置,CLAUDE_CODE_SUBAGENT_MODEL,子代理模型,子代理默认模型
+环境变量,模型配置,CLAUDE_CODE_USE_BEDROCK,使用 Bedrock,设置为 1 启用
+环境变量,模型配置,CLAUDE_CODE_USE_VERTEX,使用 Vertex AI,设置为 1 启用
+环境变量,Bash 相关,BASH_DEFAULT_TIMEOUT_MS,默认超时,长时间 bash 命令
+环境变量,Bash 相关,BASH_MAX_OUTPUT_LENGTH,最大输出长度,中截断前的字符数
+环境变量,Bash 相关,BASH_MAX_TIMEOUT_MS,最大超时,模型设置的最大超时
+环境变量,Bash 相关,CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR,保持工作目录,返回原始目录
+环境变量,凭证相关,CLAUDE_CODE_API_KEY_HELPER_TTL_MS,凭证刷新间隔,apiKeyHelper 刷新率
+环境变量,凭证相关,CLAUDE_CODE_CLIENT_CERT,客户端证书,mTLS 认证
+环境变量,凭证相关,CLAUDE_CODE_CLIENT_KEY,客户端私钥,mTLS 认证
+环境变量,凭证相关,CLAUDE_CODE_CLIENT_KEY_PASSPHRASE,私钥密码,加密私钥
+环境变量,凭证相关,AWS_BEARER_TOKEN_BEDROCK,Bedrock API 密钥,简化认证
+环境变量,网络相关,HTTP_PROXY,HTTP 代理,网络连接
+环境变量,网络相关,HTTPS_PROXY,HTTPS 代理,网络连接
+环境变量,网络相关,NO_PROXY,代理绕过列表,直接发出请求的域
+环境变量,MCP 相关,MCP_TIMEOUT,MCP 服务器启动超时,毫秒
+环境变量,MCP 相关,MCP_TOOL_TIMEOUT,MCP 工具执行超时,毫秒
+环境变量,MCP 相关,MAX_MCP_OUTPUT_TOKENS,MCP 工具输出最大令牌,默认 25000
+环境变量,功能开关,DISABLE_AUTOUPDATER,禁用自动更新,设置为 1
+环境变量,功能开关,DISABLE_BUG_COMMAND,禁用 /bug 命令,设置为 1
+环境变量,功能开关,DISABLE_COST_WARNINGS,禁用成本警告,设置为 1
+环境变量,功能开关,DISABLE_ERROR_REPORTING,退出 Sentry 错误报告,设置为 1
+环境变量,功能开关,DISABLE_NON_ESSENTIAL_TRAFFIC,禁用非必要流量,组合开关
+环境变量,功能开关,DISABLE_NON_ESSENTIAL_MODEL_CALLS,禁用非关键模型调用,设置为 1
+环境变量,功能开关,DISABLE_PROMPT_CACHING,禁用提示缓存,所有模型
+环境变量,功能开关,DISABLE_PROMPT_CACHING_HAIKU,禁用 Haiku 提示缓存
+环境变量,功能开关,DISABLE_PROMPT_CACHING_OPUS,禁用 Opus 提示缓存
+环境变量,功能开关,DISABLE_PROMPT_CACHING_SONNET,禁用 Sonnet 提示缓存
+环境变量,功能开关,DISABLE_TELEMETRY,退出 Statsig telemetry,设置为 1
+环境变量,功能开关,CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC,等价组合,所有禁用开关
+环境变量,功能开关,CLAUDE_CODE_DISABLE_TERMINAL_TITLE,禁用终端标题更新,设置为 1
+环境变量,功能开关,CLAUDE_CODE_IDE_SKIP_AUTO_INSTALL,跳过 IDE 扩展自动安装
+环境变量,功能开关,CLAUDE_CODE_SKIP_BEDROCK_AUTH,跳过 Bedrock 认证,LLM gateway
+环境变量,功能开关,CLAUDE_CODE_SKIP_VERTEX_AUTH,跳过 Vertex 认证,LLM gateway
+环境变量,功能开关,USE_BUILTIN_RIPGREP,使用内置 ripgrep,设置为 0 使用系统 rg
+环境变量,功能开关,CLAUDE_CODE_MAX_OUTPUT_TOKENS,最大输出令牌,大多数请求
+环境变量,功能开关,MAX_THINKING_TOKENS,思考令牌预算,启用扩展思考
+环境变量,功能开关,SLASH_COMMAND_TOOL_CHAR_BUDGET,斜杠命令字符预算,默认 15000
+高级功能,扩展思考,MAX_THINKING_TOKENS,启用和设置,思考过程的令牌预算
+高级功能,扩展思考,影响,复杂推理和编码任务改善,提示缓存效率降低
+高级功能,扩展思考,禁用,不设置该变量,默认禁用
+高级功能,提示缓存,Prompt Caching,自动支持,缓存提示指定 ephemeral 标志
+高级功能,提示缓存,禁用,DISABLE_PROMPT_CACHING,全局禁用
+高级功能,提示缓存,模型特定,DISABLE_PROMPT_CACHING_SONNET,禁用 Sonnet 缓存
+高级功能,1M 令牌上下文,Vertex AI,Claude Sonnet 4/4.5 支持,Beta,context-1m-2025-08-07
+高级功能,状态线,statusLine,自定义状态行,显示上下文信息
+高级功能,状态线,类型,command,运行命令,~/.claude/statusline.sh
+高级功能,输出样式,outputStyle,Explanatory,调整系统提示
+高级功能,输出样式,其他样式,可配置的输出样式,调整 Claude 行为
+高级功能,模型选择,别名,sonnet/opus/haiku,最新模型快捷方式
+高级功能,模型选择,完整名称,claude-sonnet-4-5-20250929,指定特定版本
+高级功能,子代理模型,CLAUDE_CODE_SUBAGENT_MODEL,配置子代理使用的默认模型
+高级功能,Bedrock 区域,VERTEX_REGION_Claude_4_0_SONNET,覆盖特定模型的区域
+高级功能,Bedrock 区域,ANTHROPIC_SMALL_FAST_MODEL_AWS_REGION,Haiku Bedrock 区域
+高级功能,Vertex 区域,CLOUD_ML_REGION,主要区域,global 或 regional
+高级功能,Vertex 区域,VERTEX_REGION_Claude_3_5_HAIKU,模型特定区域覆盖
+高级功能,终端标题,CLAUDE_CODE_DISABLE_TERMINAL_TITLE,禁用自动更新,基于对话上下文
+高级功能,网络配置,HTTP_PROXY/HTTPS_PROXY,代理服务器,网络连接
+高级功能,网络配置,NO_PROXY,绕过代理,直接请求列表
+高级功能,mTLS,CLAUDE_CODE_CLIENT_CERT/KEY,客户端证书和密钥,双向 TLS 认证
+高级功能,凭证刷新,CLAUDE_CODE_API_KEY_HELPER_TTL_MS,刷新间隔,apiKeyHelper
+高级功能,LiteLLM,Bedrock/Vertex 代理,跟踪支出,按密钥跟踪,未审计
+高级功能,日志记录,--verbose,详细日志,调试模式
+高级功能,调试,--debug,调试输出,详细工具执行
+文档和社区,文档,overview.md,Claude Code 介绍,产品概述
+文档和社区,文档,quickstart.md,快速入门,5 分钟入门
+文档和社区,文档,setup.md,安装和设置,高级设置
+文档和社区,文档,plugins.md,插件开发,创建插件
+文档和社区,文档,plugins-reference.md,插件 API 参考,技术规范
+文档和社区,文档,plugin-marketplaces.md,插件市场,市场管理
+文档和社区,文档,skills.md,技能创建,Agent Skills
+文档和社区,文档,mcp.md,MCP 服务器,外部工具集成
+文档和社区,文档,hooks.md,钩子概述,事件处理
+文档和社区,文档,hooks-guide.md,钩子实现指南,如何实现钩子
+文档和社区,文档,slash-commands.md,斜杠命令参考,命令文档
+文档和社区,文档,sub-agents.md,子代理使用,专门任务
+文档和社区,文档,settings.md,配置选项,设置参考
+文档和社区,文档,cli-reference.md,CLI 参考,命令和标志
+文档和社区,文档,common-workflows.md,常见工作流,分步指南
+文档和社区,文档,interactive-mode.md,交互模式,快捷键和输入模式
+文档和社区,文档,headless.md,无头模式,程序化使用
+文档和社区,文档,output-styles.md,输出自定义,输出样式
+文档和社区,文档,statusline.md,状态线配置,自定义状态线
+文档和社区,文档,memory.md,记忆和上下文管理,CLAUDE.md
+文档和社区,文档,checkpointing.md,检查点功能,倒带和恢复
+文档和社区,文档,analytics.md,使用分析,组织洞察
+文档和社区,文档,costs.md,成本跟踪,令牌使用和费用
+文档和社区,文档,monitoring-usage.md,使用监控,OpenTelemetry
+文档和社区,文档,data-usage.md,数据使用策略,隐私政策
+文档和社区,文档,security.md,安全功能,保护措施和最佳实践
+文档和社区,文档,IAM.md,身份和访问管理,权限配置
+文档和社区,文档,network-config.md,网络配置,代理和网络
+文档和社区,文档,terminal-config.md,终端配置,终端设置
+文档和社区,文档,model-config.md,模型配置,模型选择
+文档和社区,文档,llm-gateway.md,LLM 网关,网关设置
+文档和社区,文档,amazon-bedrock.md,AWS Bedrock 集成,Bedrock 配置
+文档和社区,文档,google-vertex-ai.md,Google Vertex AI 集成,Vertex 配置
+文档和社区,文档,vs-code.md,VS Code 集成,IDE 集成
+文档和社区,文档,jetbrains.md,JetBrains 集成,IDE 集成
+文档和社区,文档,devcontainer.md,Dev Container,开发容器
+文档和社区,文档,github-actions.md,GitHub Actions,CI/CD 集成
+文档和社区,文档,gitlab-ci-cd.md,GitLab CI/CD,CI/CD 集成
+文档和社区,文档,third-party-integrations.md,第三方集成,其他集成
+文档和社区,文档,legal-and-compliance.md,法律和合规,法律信息
+文档和社区,文档,troubleshooting.md,故障排除,问题解决
+文档和社区,文档,migration-guide.md,迁移指南,版本升级
+文档和社区,社区,Discord,加入 Discord,提示和支持
+文档和社区,资源,HackerOne,安全漏洞报告,漏洞奖励
+文档和社区,资源,Trust Center,安全中心,SOC 2, ISO 27001
+文档和社区,资源,参考实现,开发容器,GitHub 仓库
+文档和社区,资源,文档,完整文档,docs.claude.com
